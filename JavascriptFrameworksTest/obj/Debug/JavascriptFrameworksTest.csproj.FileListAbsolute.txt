@@ -1,0 +1,6 @@
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\bin\JavascriptFrameworksTest.dll.config
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\bin\JavascriptFrameworksTest.dll
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\bin\JavascriptFrameworksTest.pdb
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\obj\Debug\JavascriptFrameworksTest.csprojResolveAssemblyReference.cache
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\obj\Debug\JavascriptFrameworksTest.dll
+C:\Users\lfe\Documents\Visual Studio 2013\Projects\TestStackOverflow1\JavascriptFrameworksTest\obj\Debug\JavascriptFrameworksTest.pdb

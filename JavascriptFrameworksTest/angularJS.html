@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="store"> <!-- ng-app: angular root "store" is angular.module("store",...)") -->
+<head>
+    <title>Angular</title>
+
+    <!-- Angular 1.3.0  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- NOTE describe: Directive, Modules, Controllers, Expressions -->
+
+
+    <script>        //  ##### app.js #####
+        /*
+         * Modules: where the code is. Can use other modules
+         */
+        (function () { //Good habit to wraping in closure (angularJS guys)
+            var app = angular.module('store', []); //applicationName, dependencies
+            var gems = [
+                {
+                    name: "Rubis",
+                    price: 2.95,
+                    description: '...',
+                    canPurchase: true,
+                    soldOut: false,
+                    images: [
+                        "img/rubis-01.jpg",
+                        "img/rubis-02.jpg",
+                        "img/rubis-03.jpg"
+                    ]
+                },
+                {
+                    name: "Saphir",
+                    price: 12.51,
+                    description: '...',
+                    canPurchase: false,
+                    soldOut: false,
+                    images: [
+                        "img/saphir-01.jpg",
+                        "img/saphir-02.jpg",
+                        "img/saphir-03.jpg"
+                    ]
+                },
+                {
+                    name: "Emerald",
+                    price: 22.03,
+                    description: '...',
+                    canPurchase: true,
+                    soldOut: false,
+                    images: [
+                        "img/emerald-01.jpg",
+                        "img/emerald-02.jpg",
+                        "img/emerald-03.jpg"
+                    ]
+                }
+            ]
+
+            app.controller("StoreController", function () { //Controller is attached inside our app
+                this.products = gems;
+            });
+
+
+        })();
+
+     </script>
+
+</head>
+
+    <!--   Directive  =  controllerName 'as' alias  -->
+    <body ng-controller="StoreController as store"> <!-- Directive (bind the behavior, scope) -->
+        <div class="container list-group">
+            <div class="list-group-item" ng-repeat="product in store.products | orderBy:'-price'" ng-hide="product.soldOut">
+                <h3>
+                    {{product.name | uppercase}}
+                    <em class="pull-right">{{product.price | currency}}</em>
+                </h3>
+                <div class="gallery" ng-show="{{product.images.length>0}}">
+                    <div class="img-wrap">
+                        <img ng-src={{product.images[0]}} /> <!-- not src={{...}}, the navigator try to load the image before the code is executed -->
+                    </div>
+                    <ul class="img-thumbnails clearfix">
+                        <li class="small-image pull-left thumbnail" ng-repeat="image in product.images">
+                            <img ng-src="{{image}}" />
+                        </li>
+                    </ul>
+                </div>
+                <section ng-init="tab=1"> <!-- Init "tab" to 1-->
+                    <ul class="nav nav-pills">
+                        <li ng-class="{active:tab===1}"> <!-- Expression to evaluate, if true, set class to active -->
+                            <a href="" ng-click="tab=1">Description</a> <!-- Assign a value to "tab", value automatically uptated !-->
+                        </li>
+                        <li ng-class="{active:tab===2}">
+                            <a href="" ng-click="tab=2">Specification</a>
+                        </li>
+                        <li ng-class="{active:tab===3}">
+                            <a href="" ng-click="tab=3">Review</a>
+                        </li>
+                    </ul>
+                    <div class="panel" ng-show="tab===1">
+                        <h4>Description</h4>
+                        <blockquote>{{product.description}}</blockquote>
+                    </div>
+                    <div class="panel" ng-show="tab===2">
+                        <h4>Specification</h4>
+                        <blockquote>None yet</blockquote>
+                    </div>
+                    <div class="panel" ng-show="tab===3">
+                        <h4>Review</h4>
+                        <blockquote>None yet</blockquote>
+                    </div>
+                </section>
+                <button ng-show="product.canPurchase">Add to Cart</button>
+            </div>
+        </div>
+    </body>
+</html>
