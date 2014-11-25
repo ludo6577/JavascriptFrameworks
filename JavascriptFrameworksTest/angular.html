@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>AngularJS advanced comparison</title>
+
+    <!-- Angular 1.3.0 (no dependency) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+    <script>
+
+        var Genders = [
+            {
+                id: 0,
+                key: "Mr",
+                value: "Monsieur"
+            },
+            {
+                id: 1,
+                key: "Mme",
+                value: "Madame"
+            }
+        ]
+
+
+        var ClientsList = [
+            {
+                id: 0,
+                gender: Genders[0],
+                name: "Jean",
+                age: 25,
+            },
+            {
+                id: 1,
+                gender: Genders[1],
+                name: "Juliette",
+                age: 30,
+            }
+        ]
+    </script>
+
+
+
+    <!--
+            ### AngularJS ###
+    -->
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller("AppController", ['$scope', function ($scope) {
+            $scope.clients = ClientsList
+            $scope.genders = Genders;
+            $scope.toString = 
+            $scope.addClient = function () {
+                $scope.clients.push({gender:Genders[0], name:"Inconnu", age:0});
+            };
+            $scope.removeClient = function (client) {
+                index = $scope.clients.indexOf(client);
+                $scope.clients.splice(index, 1);
+            };
+        }])
+        .directive('clientFormatted', function () {  //Add a directive
+            return {
+                template: '{{client.gender.value}}: {{client.name}} ({{client.age}} ans)'
+            };
+        });
+
+    </script>
+
+
+    <div class="container" ng-app="myApp" ng-controller="AppController as controller"> <!--Move ng-app to head !!-->
+        <table class="table">
+            <caption>Liste de clients avec AngularJS</caption>
+            <tr>
+                <th>Gender</th><th>Name</th><th>Age</th><th>Output</th><th></th>
+            </tr>
+            <tr ng-repeat="client in clients" title="{{client.ID}}">
+                <td>
+                    <select ng-model="client.gender" ng-options="gender.key for gender in genders">
+                        <option value="">Choose gender</option>
+                    </select>
+                </td>
+                <td><input type="text" ng-model="client.name"></td>
+                <td><input type="text" ng-model="client.age"></td>
+                <td><client-formatted></client-formatted></td>
+                <td><button type="button" ng-click="removeClient(client);">Supprimer</button></td>
+            </tr>
+        </table>
+        <button type="button" ng-click="addClient();">Ajouter un client</button>
+    </div>
+
+
+</body>
+</html>
