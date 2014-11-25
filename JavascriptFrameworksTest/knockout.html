@@ -16,49 +16,79 @@
 </head>
 <body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- 
-                    VIEW
-    -->
-    <p>First name: <strong data-bind="text: firstName">todo</strong></p>
-    <p>Last name: <strong data-bind="text: lastName">todo</strong></p>
-    <p>Full name: <strong data-bind="text: fullName"></strong></p>
-
-    <p>First name: <input data-bind="value: firstName" /></p>
-    <p>Last name: <input data-bind="value: lastName" /></p>
-    <button data-bind="click: capitalizeLastName">Go caps</button>
-
+    <div class="container">
+        <table class="table">
+            <caption>Liste de clients</caption>
+            <tr>
+                <th>Gender</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Output</th>
+                <th></th>
+            </tr>
+            <tbody data-bind="foreach: clients">
+                <tr>
+                    <td>
+                        <select data-bind="options:Genders, optionsText:'key', optionscaption:'Choose gender', value:gender"></select>
+                    </td>
+                    <td><input type="text" data-bind="value: name"></td>
+                    <td><input type="text" data-bind="value: age"></td>
+                    <td><span data-bind="text: clientFormatted"></span></td>
+                    <td><button type="button" data-bind='click: $parent.removeClient'>Supprimer</button></td> <!-- parent car on est dans le scope foreach -->
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" data-bind='click: addClient'>Ajouter un client</button> <!-- pas parent plus de scope -->
+    </div>
 
 
     <script>
-    function AppViewModel() {
-        this.firstName = ko.observable("Bert");             //Observable: properties that automatically will issue notifications whenever their value changes.
-        this.lastName = ko.observable("Bertington");
-        this.fullName = ko.computed(function () {           //Computed: observable computed based on the values of other observables.
-            return this.firstName() + " " + this.lastName();
-        }, this);
-        this.capitalizeLastName = function () {             //Function
-            var currentVal = this.lastName();
-            this.lastName(currentVal.toUpperCase());
-        };
-    }
 
-    ko.applyBindings(new AppViewModel());                   // Activates knockout.js
+
+        var Genders = [ //Immutable (don't need observable)
+            {
+                id: 0,
+                key: "Mr",
+                value: "Monsieur"
+            },
+            {
+                id: 1,
+                key: "Mme",
+                value: "Madame"
+            }
+        ]
+
+        var Client = function (id, gender, name, age) {
+            this.id = id;
+            this.gender = ko.observable(gender);
+            this.name = ko.observable(name);
+            this.age = ko.observable(age);
+
+            this.clientFormatted = ko.computed(function () {           //Computed: observable computed based on the values of other observables.
+                return this.gender().value + ": " + this.name() + " (" + this.age() + " ans)"; //remark we call function because observable
+            }, this);
+        }
+
+        var ViewModel = function () {
+            var self = this;
+
+            self.clients = ko.observableArray([
+                new Client(0, Genders[0], "Jean", 25),
+                new Client(1, Genders[1], "Juliette", 30),
+            ]);
+
+            self.addClient = function () {
+                self.clients.push(new Client(null , Genders[0], "Inconnu", 0 ));
+            };
+
+            self.removeClient = function (client) {
+                index = self.clients.indexOf(client);
+                self.clients.splice(index, 1);
+            };
+        }
+
+        ko.applyBindings(new ViewModel());                   // Activates knockout.js
     </script>
-
-
 
 </body>
 </html>

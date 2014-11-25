@@ -58,7 +58,7 @@
         app.controller("AppController", ['$scope', function ($scope) {
             $scope.clients = ClientsList
             $scope.genders = Genders;
-            $scope.toString = 
+
             $scope.addClient = function () {
                 $scope.clients.push({gender:Genders[0], name:"Inconnu", age:0});
             };
@@ -76,11 +76,16 @@
     </script>
 
 
-    <div class="container" ng-app="myApp" ng-controller="AppController as controller"> <!--Move ng-app to head !!-->
+    <div class="container" ng-app="myApp" ng-controller="AppController as controller">
+        <!--Move ng-app to head !!-->
         <table class="table">
             <caption>Liste de clients avec AngularJS</caption>
             <tr>
-                <th>Gender</th><th>Name</th><th>Age</th><th>Output</th><th></th>
+                <th>Gender</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Output</th>
+                <th></th>
             </tr>
             <tr ng-repeat="client in clients" title="{{client.ID}}">
                 <td>

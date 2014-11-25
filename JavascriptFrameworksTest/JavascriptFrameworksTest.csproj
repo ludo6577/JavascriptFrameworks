@@ -65,15 +65,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angularJS.html" />
+    <Content Include="angularJS-codeSchool.html" />
     <Content Include="backbone.html" />
     <Content Include="ComparaisonSimple.html" />
     <Content Include="Ember.html" />
+    <Content Include="formulaire.html" />
     <Content Include="img\diamond-01.JPG" />
     <Content Include="img\emerald-01.jpg" />
     <Content Include="img\rubis-01.jpg" />
     <Content Include="img\saphir-01.jpg" />
-    <Content Include="index.html" />
+    <Content Include="angular.html" />
     <Content Include="knockout.html" />
     <Content Include="style.css" />
     <Content Include="styleAngular.css" />
