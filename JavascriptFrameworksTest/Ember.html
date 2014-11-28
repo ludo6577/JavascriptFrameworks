@@ -25,7 +25,6 @@
     -->
     <script type="text/x-handlebars">
         <div class="container">
-
             <table class="table">
                 <caption>Liste de clients</caption>
                 <tr>
@@ -135,7 +134,7 @@
          *  js/controller.js
          */
         App.ApplicationController = Ember.Controller.extend({
-            needs:['gender'],
+            //needs:['gender'],
             actions: {
                 addClient: function () {
                     return false;
@@ -154,7 +153,7 @@
         });
 
         App.ClientsController = Ember.ObjectController.extend({
-            needs: ['gender'],
+            //needs: ['gender'],
             actions: {
                 addClient: function () {
                     return false;
