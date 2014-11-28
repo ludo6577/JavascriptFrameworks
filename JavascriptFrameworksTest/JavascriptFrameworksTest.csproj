@@ -69,6 +69,7 @@
     <Content Include="backbone.html" />
     <Content Include="ComparaisonSimple.html" />
     <Content Include="Ember.html" />
+    <Content Include="Ember_tests.html" />
     <Content Include="formulaire.html" />
     <Content Include="img\diamond-01.JPG" />
     <Content Include="img\emerald-01.jpg" />

@@ -1,13 +1,232 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Backbone</title>
+    <title>Simple and fast comparison</title>
 
-    <!-- Backbone 1.1.2 -->
+    <!-- JQuery -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+
+    <!-- Backbone 1.1.2 (Jquery and Underscore dependency)-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
+    <!--
+            ### Backbone ###
+    -->
+
+    <div class="container" id="backBoneView"> <!-- View -->
+    </div>
+
+
+
+    <script>
+        var Genders = [
+            {
+                id: 0,
+                key: "Mr",
+                value: "Monsieur"
+            },
+            {
+                id: 1,
+                key: "Mme",
+                value: "Madame"
+            }
+        ];
+
+
+        var ClientsList = [
+            {
+                id: 0,
+                gender: Genders[0],
+                name: "Jean",
+                age: 25,
+            },
+            {
+                id: 1,
+                gender: Genders[1],
+                name: "Juliette",
+                age: 30,
+            }
+        ];
+
+
+
+        (function ($) {
+            Backbone.sync = function (method, model, success, error) {
+                //success();
+            }
+
+            var Client = Backbone.Model.extend({
+                defaults: {
+                    id: -1,
+                    gender: Genders[0],
+                    name: "Inconnu",
+                    age: 0,
+                },
+
+                toString: function () {
+                    return this.get('gender')['value'] + ": " + this.get('name') + " (" + this.get('age') + " ans)";
+                }
+            });
+
+            var List = Backbone.Collection.extend({
+                model: Client
+            });
+
+
+            /*
+             *  Gender
+             *  TODO?
+            var Gender = Backbone.Model.extend({
+                defaults: {
+                    id: -1,
+                    key: "Choose gender",
+                    value: ""
+                }
+            });
+
+            var GenderList = Backbone.Collection.extend({
+                model: Gender
+            });
+
+            var GenderView = Backbone.View.extend({
+                events: {
+                    'click #gender': 'genderChange',
+                },
+                initialize: function () {
+                    _.bindAll(this, 'render', 'genderChange');
+                    this.collection = new GenderList(Genders);
+                },
+                render: function () {
+                    var self = this;
+                    $(self.el).append("<select id='gender'></select>");
+                   _(this.collection.models).each(function (item) { // in case collection is not empty
+                       $('select', self.el).append("<option " + (item.id == $(self.model)[0]['id'] ? 'selected' : '') + ">" + item.get('key') + "</option>");
+                    }, this);
+                    return this;
+                },
+                genderChange: function(){
+                    this.render();
+                }
+            });
+            */
+
+
+            /*
+             * Client (comportement d'un client)
+             */
+            var ClientView = Backbone.View.extend({
+                tagName: 'tr', // name of tag to be created        
+
+                events: {
+                    'change select#gender': 'genderChange',
+                    'change input#name': 'updateName',
+                    'change input#age': 'updateAge',
+                    'click button.delete': 'remove'
+                },
+                initialize: function () {
+                    _.bindAll(this, 'render', 'updateName', 'updateAge', 'unrender', 'remove'); // every function that uses 'this' as the current object should be in here
+                    this.model.bind('remove', this.unrender);
+                },
+                render: function () {
+                    //var gender = new GenderView({
+                    //    model: this.model.get('gender')
+                    //});
+                    //gender.bind('genderChange', this.updateGender);
+                    var self = this;
+
+                    var select = "<select id='gender'>";
+                    Genders.forEach(function (entry) {
+                        select += "<option " + (entry.id == self.model.get('gender')['id'] ? 'selected' : '') + " value='" + entry.value + "'>" + entry.key + "</option>";
+                    });
+                    select += "</select>";
+
+                    $(this.el).html("<td>" + select + "</td><td><input type='text' id='name' value='" + this.model.get('name') + "'></td><td><input type='text' id='age' value='" + this.model.get('age') + "'></td><td>" + this.model.toString() + "</td><td><button type='button' class='delete'>Supprimer</button></td>");
+                    return this; // for chainable calls, like .render().el
+                },
+                genderChange: function(e){
+                    var index = $(e.currentTarget)[0].selectedIndex;
+                    this.model.set({ 'gender': Genders[index] });
+                    this.render();
+                },
+                updateName: function (e) {
+                    var val = $(e.currentTarget).val();
+                    this.model.set({ 'name': val });
+                    this.render();
+                },
+                updateAge: function (e) {
+                    var val = $(e.currentTarget).val();
+                    this.model.set({ 'age': val });
+                    this.render();
+                },
+                unrender: function () {
+                    $(this.el).remove();
+                },
+                remove: function () {
+                    this.model.destroy();
+                }
+            });
+
+            /*
+             * List (comportement général)
+             */
+            var ListView = Backbone.View.extend({
+                el: $('#backBoneView'),
+
+                events: {
+                    'click button#add': 'addClient',
+                },
+                // `initialize()` now instantiates a Collection, and binds its `add` event to own method `appendItem`. (Recall that Backbone doesn't offer a separate Controller for bindings...).
+                initialize: function () {
+                    _.bindAll(this, 'render', 'addClient', 'appendClient'); // remember: every function that uses 'this' as the current object should be in here
+
+                    this.collection = new List(ClientsList);
+                    this.collection.bind('add', this.appendClient); // collection event binder
+
+                    this.counter = -1;
+                    this.render();
+                },
+                render: function () {
+                    // Save reference to `this` so it can be accessed from within the scope of the callback below
+                    var self = this;
+                    $(this.el).append("<table class='table'><caption>Liste de clients</caption><tr><th>Gender</th><th>Name</th><th>Age</th><th>Output</th><th></th></tr></table>");
+                    _(this.collection.models).each(function (item) { // in case collection is not empty
+                        self.appendClient(item);
+                    }, this);
+                    $(this.el).append("<button type='button' id='add'>Ajouter un client</button>");
+                },
+                addClient: function () {
+                    var client = new Client();
+                    client.set({
+                        id: this.counter // modify item defaults
+                    });
+                    this.counter--;
+                    this.collection.add(client); // add item to collection; view is updated via event 'add' (no doublon?)
+                },
+                // `appendItem()` is triggered by the collection event `add`, and handles the visual update.
+                appendClient: function (item) {
+                    var client = new ClientView({
+                        model: item
+                    });
+                    //$('table', this.el).append("<tr><td>" + item.get('gender')["key"] + "</td><td>" + item.get('name') + "</td><td>" + item.get('age') + "</td><td>outp</td><td><button type='button' class='delete'>Supprimer</button></td></tr>");
+                    $('table', this.el).append(client.render().el); //Automatically add <tr></tr>
+                }
+            });
+
+            var listView = new ListView();
+        })(jQuery);
+    </script>
+
+
 
 </body>
 </html>
+

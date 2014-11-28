@@ -17,15 +17,12 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
-    <!--
-            ### Ember ###
-    -->
-    <script type="text/x-handlebars">
-        <div class="container">
 
+    <script type="text/x-handlebars">
+
+        <div class="container">
             <table class="table">
                 <caption>Liste de clients</caption>
                 <tr>
@@ -38,11 +35,12 @@
                 {{#each client in model.clients}}
                 <tr>
                     <td>
-                        {{view "select" content=model.genders optionValuePath="content.id" optionLabelPath="content.key" prompt="Choose gender" selectionBinding="client.gender"}}
+                        Selected option: {{controllers.option.selectedOption.value}}
+                        {{view "select" content=model.genders optionValuePath="content.id" optionLabelPath="content.value" prompt="Choose gender" selectionBinding="client.gender"}}
                     </td>
                     <td>{{input type="text" value=client.name}}</td>
                     <td>{{input type="text" value=client.age}}</td>
-                    <td>{{#linkTo gender this}} {{id}} {{/linkTo}} {{client.clientFormatted}}</td>
+                    <td>{{client.clientFormatted}}</td>
                     <td><button type="button" {{action 'deleteClient' }}>Supprimer</button></td>
                 </tr>
                 {{/each}}
@@ -50,11 +48,11 @@
             <button type="button" {{action 'addClient' }}>Ajouter un client</button>
         </div>
 
+        Selected option: {{controllers.option.selectedOption.value}}
+
+        {{view Em.Select prompt="test" contentBinding="controllers.option.content" optionLabelPath="content.value" optionValuePath="content.key" selectionBinding="controllers.option.selectedOption" }}
 
     </script>
-
-
-
 
     <script>
 
@@ -88,28 +86,18 @@
         ];
 
 
-        /*
-         *  js/application.js
-         */
-        //This will create a new instance of Ember.Application and make it available as a variable named Application within your browser's JavaScript environment.
-        window.App = Ember.Application.create();
-        //indicate that your application's ApplicationAdapter is an extension of the DS.FixtureAdapter (Adapters are responsible for communicating with a source of data for your application. Typically this will be a web service API, but in this case we are using an adapter designed to load fixture data)
-        App.ApplicationAdapter = DS.FixtureAdapter.extend();
+        App = Ember.Application.create();
 
-        //App.Store = DS.Store.extend({
-        //    adapter: DS.FixtureAdapter
-        //});
+        App.Store = DS.Store.extend({
+            adapter: DS.FixtureAdapter
+        });
 
-        /*
-         *  js/router.js
-         */
-        //This will tell Ember.js to detect when the application's URL matches '/' and to render the client template.
         App.Router.map(function () {
+            // put your routes here
             this.resource('clients', { path: '/' });
             this.resource('genders', { path: '/genders' });
-            this.resource('gender', { path: '/genders/:gender_id' });
         });
-        //Because we hadn't implemented this class before, Ember.js provided a Route for us with the default behavior of rendering a matching template named client
+
         App.ApplicationRoute = Ember.Route.extend({
             model: function () {
                 return Ember.RSVP.hash({
@@ -119,28 +107,12 @@
             },
         });
 
-        //App.GendersRoute = Ember.Route.extend({
-        //    model: function () {
-        //        return this.store.find('gender');
-        //    }
-        //});
-        //App.GenderRoute = Ember.Route.extend({
-        //    model: function () {
-        //        return this.store.find('gender', params["gender_id"]);
-        //    }
-        //});
-
-
-        /*
-         *  js/controller.js
-         */
-        App.ApplicationController = Ember.Controller.extend({
-            needs:['gender'],
+        App.ApplicationController = Em.Controller.extend({
+            needs: ['option'],
             actions: {
                 addClient: function () {
                     return false;
                     var todo = this.store.createRecord('client', {
-                        gender: 0,
                         name: "Inconnu",
                         age: 0
                     });
@@ -153,25 +125,28 @@
             }
         });
 
-        App.ClientsController = Ember.ObjectController.extend({
-            needs: ['gender'],
-            actions: {
-                addClient: function () {
-                    return false;
-                    var todo = this.store.createRecord('client', {
-                        gender: 0,
-                        name: "Inconnu",
-                        age: 0
-                    });
-                },
-
-                deleteClient: function () {
-                    this.get('model').deleteRecord();
-                    this.get('model').save();
-                }
-            }
+        App.Option = DS.Model.extend({
+            name: DS.attr('string')
         });
 
+        App.Option.FIXTURES = [
+        {
+            id: 'OP1',
+            name: 'Option 1'
+        },
+        {
+            id: 'OP2',
+            name: 'Option 2'
+        }
+        ];
+
+        App.OptionController = Em.Controller.extend({
+            selectedOption: Ember.computed.alias('content.firstObject'),
+            init: function() {
+                this._super();
+                this.set('model', this.get('store').find('gender'))
+            }
+        })
 
 
         /*
@@ -186,20 +161,17 @@
 
         //This code creates a new class Client and places it within your application's namespace
         App.Client = DS.Model.extend({ //id field is used by default by Ember !
-            gender: DS.belongsTo('gender', { async: false }), //relation one to one (when async is true, it will fetch the related entities when you actually request them, needed with Fixture)
+            gender: DS.belongsTo('gender', { async: true }), //relation one to one (when async is true, it will fetch the related entities when you actually request them, needed with Fixture)
             name: DS.attr('string'),
             age: DS.attr('boolean'),
-            
-            clientFormatted: function () {
 
-                return this.get('gender').get('value') + ': ' + this.get('name') + ' (' + this.get('age') + ' ans)';
+            clientFormatted: function () {
+                return this.get('gender') + ': ' + this.get('name') + ' (' + this.get('age') + ' ans)';
             }.property('gender', 'name', 'age'),
         });
         //Fixtures are a way to put sample data into an application before connecting the application to long-term persistence.
         App.Client.FIXTURES = ClientsList;
     </script>
-
-
 
 </body>
 </html>
