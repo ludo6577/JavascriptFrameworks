@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html ng-app="myApp">
 <head>
     <title>AngularJS advanced comparison</title>
 
@@ -60,7 +60,7 @@
             $scope.genders = Genders;
 
             $scope.addClient = function () {
-                $scope.clients.push({gender:Genders[0], name:"Inconnu", age:0});
+                $scope.clients.push({ gender: Genders[0], name: "Inconnu", age: 0 });
             };
             $scope.removeClient = function (client) {
                 index = $scope.clients.indexOf(client);
@@ -76,7 +76,7 @@
     </script>
 
 
-    <div class="container" ng-app="myApp" ng-controller="AppController as controller">
+    <div class="container" ng-controller="AppController as controller">
         <!--Move ng-app to head !!-->
         <table class="table">
             <caption>Liste de clients avec AngularJS</caption>
@@ -101,7 +101,5 @@
         </table>
         <button type="button" ng-click="addClient();">Ajouter un client</button>
     </div>
-
-
 </body>
 </html>

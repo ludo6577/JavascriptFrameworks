@@ -23,7 +23,7 @@
     <!--
             ### Ember ###
     -->
-    <script type="text/x-handlebars">
+    <script type="text/x-handlebars" data-template-name="clients">
         <div class="container">
             <table class="table">
                 <caption>Liste de clients</caption>
@@ -42,7 +42,7 @@
                     <td>{{input type="text" value=client.name}}</td>
                     <td>{{input type="text" value=client.age}}</td>
                     <td>{{#linkTo gender this}} {{id}} {{/linkTo}} {{client.clientFormatted}}</td>
-                    <td><button type="button" {{action 'deleteClient' }}>Supprimer</button></td>
+                    <td><button type="button" {{action 'deleteClient' client}}>Supprimer</button></td>
                 </tr>
                 {{/each}}
             </table>
@@ -133,30 +133,28 @@
         /*
          *  js/controller.js
          */
-        App.ApplicationController = Ember.Controller.extend({
-            //needs:['gender'],
-            actions: {
-                addClient: function () {
-                    return false;
-                    var todo = this.store.createRecord('client', {
-                        gender: 0,
-                        name: "Inconnu",
-                        age: 0
-                    });
-                },
+        //App.ApplicationController = Ember.Controller.extend({
+        //    //needs:['gender'],
+        //    actions: {
+        //        addClient: function () {
+        //            var todo = this.store.createRecord('client', {
+        //                gender: 0,
+        //                name: "Inconnu",
+        //                age: 0
+        //            });
+        //        },
 
-                deleteClient: function () {
-                    this.get('model').deleteRecord();
-                    this.get('model').save();
-                }
-            }
-        });
+        //        deleteClient: function () {
+        //            this.get('model.clients').deleteRecord();
+        //            this.get('model.clients').save();
+        //        }
+        //    }
+        //});
 
         App.ClientsController = Ember.ObjectController.extend({
             //needs: ['gender'],
             actions: {
                 addClient: function () {
-                    return false;
                     var todo = this.store.createRecord('client', {
                         gender: 0,
                         name: "Inconnu",
@@ -164,9 +162,9 @@
                     });
                 },
 
-                deleteClient: function () {
-                    this.get('model').deleteRecord();
-                    this.get('model').save();
+                deleteClient: function (client) {
+                    client.deleteRecord();
+                    client.save();
                 }
             }
         });
@@ -190,8 +188,8 @@
             age: DS.attr('boolean'),
             
             clientFormatted: function () {
-
-                return this.get('gender').get('value') + ': ' + this.get('name') + ' (' + this.get('age') + ' ans)';
+                var gender = this.get('gender') ? this.get('gender').get('value') : "Inconnu";
+                return gender + ': ' + this.get('name') + ' (' + this.get('age') + ' ans)';
             }.property('gender', 'name', 'age'),
         });
         //Fixtures are a way to put sample data into an application before connecting the application to long-term persistence.
