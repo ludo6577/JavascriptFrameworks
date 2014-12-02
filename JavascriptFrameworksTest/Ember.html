@@ -3,20 +3,20 @@
 <head>
     <title></title>
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="style/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style/style.css">
+
     <!-- JQuery -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="script/jquery-2.1.1.min.js"></script>
 
 
     <!-- Ember 1.9.0  -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.9.0-beta.1/ember.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.11/ember-data.min.js"></script>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <script src="script/handlebars-v1.3.0.js"></script>
+    <script src="script/ember.min.js"></script>
+    <script src="script/ember-data.min.js"></script>
 
 </head>
 <body>
@@ -93,11 +93,11 @@
         //This will create a new instance of Ember.Application and make it available as a variable named Application within your browser's JavaScript environment.
         window.App = Ember.Application.create();
         //indicate that your application's ApplicationAdapter is an extension of the DS.FixtureAdapter (Adapters are responsible for communicating with a source of data for your application. Typically this will be a web service API, but in this case we are using an adapter designed to load fixture data)
-        App.ApplicationAdapter = DS.FixtureAdapter.extend();
+        //App.ApplicationAdapter = DS.FixtureAdapter.extend();
 
-        //App.Store = DS.Store.extend({
-        //    adapter: DS.FixtureAdapter
-        //});
+        App.Store = DS.Store.extend({
+            adapter: DS.FixtureAdapter
+        });
 
         /*
          *  js/router.js
@@ -118,39 +118,9 @@
             },
         });
 
-        //App.GendersRoute = Ember.Route.extend({
-        //    model: function () {
-        //        return this.store.find('gender');
-        //    }
-        //});
-        //App.GenderRoute = Ember.Route.extend({
-        //    model: function () {
-        //        return this.store.find('gender', params["gender_id"]);
-        //    }
-        //});
-
-
         /*
          *  js/controller.js
          */
-        //App.ApplicationController = Ember.Controller.extend({
-        //    //needs:['gender'],
-        //    actions: {
-        //        addClient: function () {
-        //            var todo = this.store.createRecord('client', {
-        //                gender: 0,
-        //                name: "Inconnu",
-        //                age: 0
-        //            });
-        //        },
-
-        //        deleteClient: function () {
-        //            this.get('model.clients').deleteRecord();
-        //            this.get('model.clients').save();
-        //        }
-        //    }
-        //});
-
         App.ClientsController = Ember.ObjectController.extend({
             //needs: ['gender'],
             actions: {

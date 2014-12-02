@@ -14,7 +14,7 @@
     <RootNamespace>JavascriptFrameworksTest</RootNamespace>
     <AssemblyName>JavascriptFrameworksTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -77,8 +77,19 @@
     <Content Include="img\saphir-01.jpg" />
     <Content Include="angular.html" />
     <Content Include="knockout.html" />
-    <Content Include="style.css" />
-    <Content Include="styleAngular.css" />
+    <Content Include="script\angular.min.js" />
+    <Content Include="script\backbone-min.js" />
+    <Content Include="script\ember-data.min.js" />
+    <Content Include="script\ember.min.js" />
+    <Content Include="script\ember.prod.js" />
+    <Content Include="script\handlebars-v1.3.0.js" />
+    <Content Include="script\hugeClientsList.js" />
+    <Content Include="script\jquery-2.1.1.min.js" />
+    <Content Include="script\knockout-3.2.0.js" />
+    <Content Include="script\underscore-min.js" />
+    <Content Include="style\bootstrap.min.css" />
+    <Content Include="style\style.css" />
+    <Content Include="style\styleAngular.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +110,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63077</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63077/</IISUrl>
+          <IISUrl>http://localhost/JavascriptFrameworksTest</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

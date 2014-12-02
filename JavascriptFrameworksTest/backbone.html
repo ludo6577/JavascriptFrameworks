@@ -3,18 +3,18 @@
 <head>
     <title>Simple and fast comparison</title>
 
-    <!-- JQuery -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
-
-    <!-- Backbone 1.1.2 (Jquery and Underscore dependency)-->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
-
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/bootstrap.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
+
+    <!-- JQuery -->
+    <script src="script/jquery-2.1.1.min.js"></script>
+
+    <!-- Backbone 1.1.2 (Jquery and Underscore dependency)-->
+    <script src="script/underscore-min.js"></script>
+    <script src="script/backbone-min.js"></script>
 
 </head>
 <body>
@@ -128,7 +128,7 @@
 
                 events: {
                     'change select#gender': 'genderChange',
-                    'change input#name': 'updateName',
+                    'change  input#name': 'updateName',
                     'change input#age': 'updateAge',
                     'click button.delete': 'remove'
                 },
