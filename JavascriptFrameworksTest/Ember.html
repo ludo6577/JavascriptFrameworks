@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>Ember</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="style/bootstrap.min.css">
@@ -24,6 +24,9 @@
             ### Ember ###
     -->
     <script type="text/x-handlebars" data-template-name="clients">
+        <!-- 
+            Corps du template
+        -->
         <div class="container">
             <table class="table">
                 <caption>Liste de clients</caption>
@@ -41,15 +44,13 @@
                     </td>
                     <td>{{input type="text" value=client.name}}</td>
                     <td>{{input type="text" value=client.age}}</td>
-                    <td>{{#linkTo gender this}} {{id}} {{/linkTo}} {{client.clientFormatted}}</td>
+                    <td>{{client.clientFormatted}}</td>
                     <td><button type="button" {{action 'deleteClient' client}}>Supprimer</button></td>
                 </tr>
                 {{/each}}
             </table>
             <button type="button" {{action 'addClient' }}>Ajouter un client</button>
         </div>
-
-
     </script>
 
 
@@ -93,11 +94,11 @@
         //This will create a new instance of Ember.Application and make it available as a variable named Application within your browser's JavaScript environment.
         window.App = Ember.Application.create();
         //indicate that your application's ApplicationAdapter is an extension of the DS.FixtureAdapter (Adapters are responsible for communicating with a source of data for your application. Typically this will be a web service API, but in this case we are using an adapter designed to load fixture data)
-        //App.ApplicationAdapter = DS.FixtureAdapter.extend();
+        App.ApplicationAdapter = DS.FixtureAdapter.extend();
 
-        App.Store = DS.Store.extend({
-            adapter: DS.FixtureAdapter
-        });
+        //App.Store = DS.Store.extend({
+        //    adapter: DS.FixtureAdapter
+        //});
 
         /*
          *  js/router.js
@@ -105,9 +106,10 @@
         //This will tell Ember.js to detect when the application's URL matches '/' and to render the client template.
         App.Router.map(function () {
             this.resource('clients', { path: '/' });
-            this.resource('genders', { path: '/genders' });
-            this.resource('gender', { path: '/genders/:gender_id' });
+            //this.resource('genders', { path: '/genders' });
+            //this.resource('gender', { path: '/genders/:gender_id' });
         });
+
         //Because we hadn't implemented this class before, Ember.js provided a Route for us with the default behavior of rendering a matching template named client
         App.ApplicationRoute = Ember.Route.extend({
             model: function () {
@@ -122,7 +124,6 @@
          *  js/controller.js
          */
         App.ClientsController = Ember.ObjectController.extend({
-            //needs: ['gender'],
             actions: {
                 addClient: function () {
                     var todo = this.store.createRecord('client', {
@@ -158,7 +159,11 @@
             age: DS.attr('boolean'),
             
             clientFormatted: function () {
-                var gender = this.get('gender') ? this.get('gender').get('value') : "Inconnu";
+                if (this.get('gender'))
+                    var gender = this.get('gender').get('value');
+                else
+                    var gender = "Inconnu"
+
                 return gender + ': ' + this.get('name') + ' (' + this.get('age') + ' ans)';
             }.property('gender', 'name', 'age'),
         });
