@@ -1,7 +1,7 @@
 Comparison of JavaScript Frameworks 
 ====================================
 
-Simple application :
+Develop a simple application :
 -------------------
 
 ![alt tag](https://raw.githubusercontent.com/ludo6577/JavascriptFrameworks/master/app.png)
