@@ -56,11 +56,11 @@
     -->
     <script>
         var app = angular.module('myApp', []);
-        app.controller("AppController", ['$scope', function ($scope) {
+        app.controller("AppController", function ($scope) {
             /*
              *  Code du controller
              */
-            $scope.clients = ClientsList
+            $scope.clients = ClientsList;
             $scope.genders = Genders;
 
             $scope.addClient = function () {
@@ -70,7 +70,7 @@
                 index = $scope.clients.indexOf(client);
                 $scope.clients.splice(index, 1);
             };
-        }])
+        })
         .directive('clientFormatted', function () {  //Add a directive
             return {
                 template: '{{client.gender.value}}: {{client.name}} ({{client.age}} ans)'

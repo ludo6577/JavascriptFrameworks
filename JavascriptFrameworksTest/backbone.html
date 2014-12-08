@@ -72,7 +72,7 @@
                     age: 0,
                 },
 
-                toString: function () {
+                clientFormatted: function () {
                     return this.get('gender')['value'] + ": " + this.get('name') + " (" + this.get('age') + " ans)";
                 }
             });
@@ -84,7 +84,7 @@
 
             /*
              *  Gender
-             *  TODO?
+             *
             var Gender = Backbone.Model.extend({
                 defaults: {
                     id: -1,
@@ -145,11 +145,14 @@
 
                     var select = "<select id='gender'>";
                     Genders.forEach(function (entry) {
-                        select += "<option " + (entry.id == self.model.get('gender')['id'] ? 'selected' : '') + " value='" + entry.value + "'>" + entry.key + "</option>";
+                        var selected = '';
+                        if (entry.id == self.model.get('gender')['id'])
+                            selected = 'selected';
+                        select += "<option " + (selected) + " value='" + entry.value + "'>" + entry.key + "</option>";
                     });
                     select += "</select>";
 
-                    $(this.el).html("<td>" + select + "</td><td><input type='text' id='name' value='" + this.model.get('name') + "'></td><td><input type='text' id='age' value='" + this.model.get('age') + "'></td><td>" + this.model.toString() + "</td><td><button type='button' class='delete'>Supprimer</button></td>");
+                    $(this.el).html("<td>" + select + "</td><td><input type='text' id='name' value='" + this.model.get('name') + "'></td><td><input type='text' id='age' value='" + this.model.get('age') + "'></td><td>" + this.model.clientFormatted() + "</td><td><button type='button' class='delete'>Supprimer</button></td>");
                     return this; // for chainable calls, like .render().el
                 },
                 genderChange: function(e){
@@ -181,9 +184,6 @@
             var ListView = Backbone.View.extend({
                 el: $('#backBoneView'),
 
-                events: {
-                    'click button#add': 'addClient',
-                },
                 // `initialize()` now instantiates a Collection, and binds its `add` event to own method `appendItem`. (Recall that Backbone doesn't offer a separate Controller for bindings...).
                 initialize: function () {
                     _.bindAll(this, 'render', 'addClient', 'appendClient'); // remember: every function that uses 'this' as the current object should be in here
@@ -202,6 +202,9 @@
                         self.appendClient(item);
                     }, this);
                     $(this.el).append("<button type='button' id='add'>Ajouter un client</button>");
+                },
+                events: {
+                    'click button#add': 'addClient',
                 },
                 addClient: function () {
                     var client = new Client();
