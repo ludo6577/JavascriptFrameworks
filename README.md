@@ -1,11 +1,13 @@
-========================
-= JavascriptFrameworks =
-========================
+Comparison of JavaScript Frameworks 
+====================================
 
+Develop a simple application:
 
-Comparatif and tests of : 
+![alt tag](https://raw.githubusercontent.com/ludo6577/JavascriptFrameworks/master/app.png)
 
-_AngularJS (angular.html)
-_Backbone (backbone.html)
-_Ember (ember.html)
-_Knockout (knockout.html)
+With these 4 Frameworks : 
+
+* [AngularJS](https://github.com/ludo6577/JavascriptFrameworks/angular.html)
+* [Knockout](https://github.com/ludo6577/JavascriptFrameworks/knockout.html)
+* [Ember](https://github.com/ludo6577/JavascriptFrameworks/ember.html)
+* [Backbone](https://github.com/ludo6577/JavascriptFrameworks/backbone.html)
