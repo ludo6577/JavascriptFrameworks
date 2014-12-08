@@ -1,11 +1,13 @@
 Comparison of JavaScript Frameworks 
 ====================================
 
-#Simple application :#
+Simple application :
+-------------------
 
 ![alt tag](https://raw.githubusercontent.com/ludo6577/JavascriptFrameworks/master/app.png)
 
-#With these 4 Frameworks :#
+With these 4 Frameworks :
+-------------------
 
 * [AngularJS](angular.html)
 * [Knockout](knockout.html)
